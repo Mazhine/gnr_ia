@@ -15,9 +15,12 @@ l'environnement.
 
 **Casse / ouvert.** Le PyTorch installe sur la machine est un build CPU : CUDA
 n'est pas disponible, l'inference serait tombee sur le processeur sans erreur.
-Environnement virtuel recree hors du depot avec un build CUDA. Le demon Docker
-est arrete : l'infrastructure n'a pas encore ete demarree. L'image `minio/minio`
-ne se resout plus sur Docker Hub, le stockage d'objets est reporte en phase 2.
+Environnement virtuel recree hors du depot avec un build CUDA 12.8. Le
+telechargement du wheel (2,6 Gio) a echoue deux fois sur un DNS instable ; la
+reprise par `curl -C -` a permis d'aboutir. Verification finale : sm_120, 8 Gio,
+bfloat16, 13,5 TFLOPS mesures. Le demon Docker est arrete : l'infrastructure
+n'a pas encore ete demarree. L'image `minio/minio` ne se resout plus sur Docker
+Hub, le stockage d'objets est reporte en phase 2.
 
 **Suivant.** Phase 1 : generateur de corpus deterministe, manifeste des
 documents, deux familles d'equipements, documents pieges.

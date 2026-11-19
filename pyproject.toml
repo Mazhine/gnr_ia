@@ -5,6 +5,7 @@ description = "Assistant documentaire multimodal et agentique pour la maintenanc
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
 dependencies = [
+    "numpy>=2.1",
     "pydantic>=2.9",
     "pydantic-settings>=2.6",
     "platformdirs>=4.3",
