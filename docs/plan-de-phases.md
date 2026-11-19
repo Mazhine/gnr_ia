@@ -129,7 +129,7 @@ réellement nécessaire (relecture, arbitrage), pas le temps de présence.
 | Phase | Matériel mobilisé | Disque | Temps machine | Ton temps |
 |---|---|---|---|---|
 | 0 | GPU (vérification), PyTorch CUDA | ~6 Go | 10–20 min de téléchargement | 30 min |
-| 1 | CPU seul | < 1 Go | < 10 min | 1–2 h de relecture du corpus |
+| 1 | CPU seul | 1–2 Go | 10–20 min | 2–4 h : relecture du corpus et validation du rapport |
 | 2 | CPU seul | 5–10 Go (images de pages) | 30–60 min | 30 min sur un échantillon |
 | 3 | GPU 8 Go (embeddings) | 10–20 Go (index, caches) | 1–3 h en tâche de fond | 30 min |
 | 4 | GPU 8 Go (VLM) | 4–8 Go (poids du modèle) | 10–20 min par passe | 1 h de revue des réponses |
@@ -187,41 +187,54 @@ vides) ; `.\tasks.ps1 help` liste les tâches.
 
 ---
 
-### Phase 1 — Fondations data : corpus & manifeste *(3–4 j)*
+### Phase 1 — Corpus et livrable 1 *(4–5 j)*
 
-**Objectif** : produire un corpus **réel, contrôlable et reproductible**, avec une fiche par
-document. C'est la phase la plus rentable de tout le projet.
+**Objectif** : produire le corpus **et le dossier de cadrage** exigés par le livrable 1, dans le
+format exact imposé. Cette phase ne produit pas que des données : elle produit un rendu noté.
 
-**Travaux**
-- **Générateur de corpus** (`scripts/gen_corpus/`) : génération déterministe depuis des modèles
-  + tables de données + un seed.
-  - Manuels d'équipement (sections, tableaux d'alarmes, valeurs de seuil)
-  - Procédures de maintenance (étapes numérotées, prérequis sécurité)
-  - Schémas et schémas de câblage (générés en PNG/SVG, légendés)
-  - Fiches de sécurité, gammes de vérification
-  - Photographies de panneaux de commande (voyants, étiquettes, plaques signalétiques) —
-    dont des cas volontairement **illisibles** et des cas **ambigus** (voyant orange sur deux
-    équipements différents)
-  - 3 à 5 documents **piégés** (injection) et 2 à 3 documents **contradictoires** entre eux
-- **Deux familles d'équipements** avec des alarmes *volontairement proches* (le sujet cite
-  explicitement l'alarme de température vs. un voyant similaire d'un autre équipement).
-- **Manifeste** `corpus/manifest.yaml` → `schemas/document_manifest.schema.json` :
-  `doc_id`, `version`, `hash`, `family`, `equipment_ids`, `access_groups`, `doc_type`,
-  `source`, `license`, `pages`, `lang`, `ocr_required`.
-- **Zone bronze** : `data/raw/<doc_id>/<version>/` immuable, checksums.
-- **Contrôles qualité** : nombre de pages, extractibilité du texte, résolution des images,
-  détection de doublons par hash, cohérence manifeste ↔ fichiers.
-- **Jeu de questions « or » textuel initial** (~40 questions) : réponse attendue + élément source
-  identifié à la main. Il servira dès la phase 3.
+**Point de vigilance** : le L1 impose ses propres noms de fichiers et ses propres colonnes. Le
+`manifest.yaml` initialement prévu est remplacé par `corpus/inventaire.csv` au format de l'école
+(20 colonnes imposées). On ne maintient pas deux registres en parallèle — un seul, et un script
+qui vérifie que le disque et l'inventaire racontent la même chose.
 
-**Artefacts** : `data/raw/` (40 doc. max, ≥ 30), `corpus/manifest.yaml` validé, `docs/data_card.md`,
-`corpus/dq_report.md`, générateur exécutable (`.\tasks.ps1 corpus -Seed 42`).
+**Lot 1A — Générateur de corpus** (`scripts/gen_corpus/`)
+- Génération déterministe depuis des modèles + tables de données + un seed.
+- Manuels (sections, tableaux d'alarmes, seuils), procédures, fiches de sécurité, schémas,
+  tableaux de codes d'alarme, photos de panneaux de commande, historiques fictifs.
+- **Cohérence transverse obligatoire** : mêmes `equipement_id`, mêmes codes d'alarme, mêmes
+  renvois de page entre un manuel, son schéma et son historique. C'est explicitement attendu.
+- Cas prévus dès maintenant : **2 documents contradictoires**, **1 piégé** (injection),
+  **4 ambigus** (voyants proches, plaque illisible), **3 scannés** (pour l'OCR),
+  **2 en anglais** signalés.
+- Objectif 40 documents, 2 familles, ≥ 10 avec éléments visuels.
 
-**Critère de sortie** : `.\tasks.ps1 corpus` reproduit le corpus octet pour octet ; le validateur de
-schéma passe ; les 40 questions ont une source identifiée.
+**Lot 1B — Registre et traçabilité**
+- `corpus/inventaire.csv` : 20 colonnes imposées, une ligne par fichier, et réciproquement.
+- `corpus/prompts_corpus.md` : prompts numérotés P01…, outil, date, documents produits,
+  défauts relevés, corrections appliquées.
+- Script de contrôle : `.\tasks.ps1 corpus-check` — vérifie la bijection fichiers ↔ inventaire,
+  la présence des colonnes, les valeurs autorisées, et les quotas (≥ 10 visuels, ≥ 2 scannés,
+  ≥ 2 contradictoires, ≥ 1 piégé).
 
-**Risque principal** : dérive du périmètre de génération. Parade : le corpus est figé en fin de
-phase 1 et versionné ; les ajouts sont des `v2`, jamais des modifications en place.
+**Lot 1C — Architecture et diagrammes**
+- Schéma à 7 blocs avec les points de contrôle placés dessus.
+- Sources Mermaid dans `docs/diagrammes/`, export en image pour le rapport.
+- Fiches de blocs, parcours de requête, questions ouvertes.
+
+**Lot 1D — Rapport et archive**
+- Rapport de 10 à 15 pages hors annexes, six parties dans l'ordre imposé.
+- `L1_MaintiDoc_<NomEquipe>.zip` avec l'arborescence exacte, `LienGitHub.txt`, `README.md`,
+  et le dossier corpus.
+
+**Artefacts** : `corpus/` complet (documents, images, inventaire, prompts), `docs/diagrammes/`,
+`docs/livrable-1/rapport.pdf`, archive ZIP conforme.
+
+**Critère de sortie** : la checklist de dépôt du L1 passe intégralement ; `.\tasks.ps1 corpus`
+reproduit le corpus octet pour octet ; le rapport tient dans la fourchette de pages.
+
+**Risque principal** : livrer un corpus incohérent (codes d'alarme différents entre le manuel et
+le tableau d'alarmes). Parade : les identifiants viennent d'une source unique dans le générateur,
+jamais saisis à la main dans deux fichiers.
 
 ---
 
