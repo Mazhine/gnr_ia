@@ -1,0 +1,69 @@
+# Infrastructure locale du prototype. Les versions sont figees ici et non
+# derivees de "latest" : une demonstration doit rester reproductible.
+#
+# L'inference des modeles ne passe pas par Docker : le GPU n'est pas expose aux
+# conteneurs sous Windows sans WSL2, et le passage par WSL2 coute plus qu'il ne
+# rapporte. Voir docs/adr/0002-runtime-natif-windows.md.
+#
+# Les volumes sont nommes (geres par Docker) pour rester hors du dossier
+# synchronise par OneDrive.
+
+name: maintidoc
+
+services:
+  qdrant:
+    image: qdrant/qdrant:v1.20.2
+    restart: unless-stopped
+    ports:
+      - "6333:6333" # API HTTP
+      - "6334:6334" # gRPC
+    volumes:
+      - qdrant_data:/qdrant/storage
+
+  postgres:
+    image: postgres:16.16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-maintidoc}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-maintidoc}
+      POSTGRES_DB: ${POSTGRES_DB:-maintidoc}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-maintidoc} -d ${POSTGRES_DB:-maintidoc}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # MLflow sur SQLite : suffisant pour un utilisateur unique et evite de
+  # dependre du pilote PostgreSQL dans une image que l'on ne controle pas.
+  # Le passage a un backend PostgreSQL est une ligne a changer en phase 8.
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v3.18.0
+    restart: unless-stopped
+    command:
+      - mlflow
+      - server
+      - --backend-store-uri
+      - sqlite:////mlflow/mlflow.db
+      - --artifacts-destination
+      - /mlflow/artifacts
+      - --host
+      - 0.0.0.0
+      - --port
+      - "5000"
+    ports:
+      - "5000:5000"
+    volumes:
+      - mlflow_data:/mlflow
+
+# Ajoutes en phase 5 : api (FastAPI), ui (Streamlit), mcp-server.
+# Ils resteront des conteneurs applicatifs sans acces GPU : le modele tourne
+# en natif et est joint par HTTP.
+
+volumes:
+  qdrant_data:
+  pg_data:
+  mlflow_data:

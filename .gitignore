@@ -1,0 +1,34 @@
+# --- Artefacts lourds : hors dépôt, dans MAINTIDOC_HOME ---
+# Le dossier projet est synchronisé par OneDrive. Y placer un environnement
+# virtuel, des modèles ou un index vectoriel provoque des ralentissements et des
+# fichiers verrouillés. Voir docs/adr/0002-runtime-natif-windows.md.
+.venv/
+venv/
+data/
+models/
+runs/
+mlruns/
+qdrant_storage/
+minio_data/
+
+# --- Secrets ---
+.env
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# --- Éditeurs et système ---
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+.DS_Store
+*~
