@@ -46,8 +46,11 @@ procedures identiques. Tous corriges, journalises dans
 faire : dix documents critiques sont prepares dans
 `docs/livrable-1/revue-corpus.md`, la colonne `verifie_par` porte encore
 « relecture humaine a completer » et ne sera remplie qu'apres ouverture des
-fichiers. Le lien GitHub n'existe pas encore : le depot est local, le fichier
-`LienGitHub.txt` ne peut pas etre rempli avant sa creation.
+fichiers. Le depot a ete pousse le 23 novembre sur
+https://github.com/Mazhine/gnr_ia ; il est encore prive, donc pas ouvrable par
+l'enseignante tant que la visibilite n'a pas ete passee en public (ou un acces
+accorde). L'archive `docs/livrable-1/L1_MaintiDoc_CHATER.zip` est construite et
+verifiee (structure imposee, 40 documents inventaries dans les deux sens).
 
 **Suivant.** Phase 2 : ingestion du corpus (extraction, OCR des trois scans,
 decoupage, metadonnees), index Qdrant et premiers embeddings.
