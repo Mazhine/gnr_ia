@@ -16,7 +16,7 @@ remplace ni les procedures de securite ni un technicien habilite.
 | Phase | Etat |
 |---|---|
 | 0 — Cadrage et environnement | termine |
-| 1 — Corpus et manifeste | a venir |
+| 1 — Corpus et manifeste | termine |
 | 2 — Ingestion | a venir |
 | 3 — Indexation et recherche | a venir |
 | 4 — Generation et citations | a venir |
@@ -56,19 +56,42 @@ le processeur sans signaler d'erreur.
 .\tasks.ps1 check        # etat de l'environnement
 .\tasks.ps1 test         # tests unitaires
 .\tasks.ps1 lint         # ruff et mypy
+.\tasks.ps1 corpus       # regenere les 40 documents et l'inventaire
+.\tasks.ps1 corpus-check # verifie le corpus produit (11 controles)
+.\tasks.ps1 diagrammes   # figures du rapport
+.\tasks.ps1 rapport      # rapport PDF, lu depuis l'inventaire
 .\tasks.ps1 infra-up     # Qdrant, PostgreSQL, MLflow
 .\tasks.ps1 infra-down
 ```
 
+## Corpus
+
+Quarante documents synthetiques, deux familles d'equipements fictives :
+ascenseurs et monte-charges (constructeur Verticalis), portes et portails
+automatiques (Portalis). Le corpus est produit par un generateur deterministe,
+pas collecte sur le web : la licence est donc sans ambiguite et les identifiants
+d'equipement sont les memes d'un document a l'autre.
+
+Le registre est `corpus/inventaire.csv` : une ligne par fichier, vingt colonnes,
+valeurs mesurees sur les fichiers produits. Les prompts qui ont pilote
+l'ecriture du generateur sont traces dans `corpus/prompts_corpus.md`. Le corpus
+contient volontairement deux paires contradictoires, un document piege
+(injection de prompt), cinq cas ambigus et trois scans sans couche texte.
+
 ## Structure
 
 ```
-docs/            plan, perimetre, decisions d'architecture (ADR), journal
-scripts/         outils de developpement et de generation de donnees
+corpus/          inventaire, prompts, documents PDF et images sources
+docs/            plan, perimetre, ADR, journal, livrable 1, diagrammes
+scripts/         generateur de corpus, figures, rapport
 src/maintidoc/   code du projet
 tests/           tests unitaires
-corpus/          sources documentaires versionnees (texte uniquement)
 ```
+
+Le livrable 1 (cadrage, corpus et architecture) est dans
+`docs/livrable-1/` : rapport PDF, plan du corpus, journal des corrections,
+protocole et grille de relecture. Les figures du rapport sont dans
+`docs/diagrammes/` et se regenerent par `.\tasks.ps1 diagrammes`.
 
 Les artefacts lourds (environnement virtuel, modeles, index, corpus extrait)
 vivent dans `%LOCALAPPDATA%\maintidoc` et ne sont pas versionnes. Le depot est

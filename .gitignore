@@ -14,6 +14,14 @@ minio_data/
 # --- Secrets ---
 .env
 
+# Intermediaires du generateur de corpus : PDF avant numerisation, figures
+# communes. Regenerables par `.\tasks.ps1 corpus`, donc hors depot.
+corpus/.cache/
+
+# Archive du livrable : produite par `.\tasks.ps1 livrable` a partir du depot,
+# donc jamais versionnee (le rapport et le corpus le sont deja).
+docs/livrable-1/L1_MaintiDoc_*.zip
+
 # --- Python ---
 __pycache__/
 *.py[cod]

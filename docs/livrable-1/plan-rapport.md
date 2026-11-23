@@ -42,8 +42,9 @@ arborescence du dépôt.
 
 **Contexte et utilisateurs.** Deux profils seulement, décrits par ce qu'ils font
 et non par des adjectifs : le technicien d'intervention (sur le terrain, une
-photo, une question courte, pas le temps de lire 24 pages) et le responsable de
-maintenance (arbitre, ouvre les tickets, a besoin de la trace documentaire).
+photo, une question courte, pas le temps de lire 100 pages de documentation) et
+le responsable de maintenance (arbitre, ouvre les tickets, a besoin de la trace
+documentaire).
 
 **Quatre cas d'usage** — chacun doit pouvoir être rejoué en démonstration :
 
@@ -91,12 +92,12 @@ codes d'alarme. La cohérence des identifiants est explicitement attendue.
 | Documents | 40 (fourchette 30–50) |
 | Familles | 2, environ 20 chacune |
 | Types | manuel, procédure, fiche de sécurité, schéma, codes d'alarme, photo, historique |
-| Documents avec éléments visuels | ≥ 10, cible 16 |
+| Documents avec éléments visuels | ≥ 10, cible 28 |
 | Documents scannés (OCR) | ≥ 2, cible 3 |
 | Langue | français, 2 documents en anglais signalés |
 | Contradictoires | 2 minimum |
 | Piégé (injection) | 1 minimum |
-| Ambigu | 4 (voyants proches, plaque illisible) |
+| Ambigu | 5 (voyants proches, plaque illisible) |
 
 **Traçabilité.** Chaque ligne de `inventaire.csv` porte provenance, licence,
 outil, numéro de prompt, relecteur et corrections. Les prompts sont dans
@@ -165,10 +166,10 @@ les contrôles), **ticket** (préparation → approbation → appel MCP → idem
 **Schéma des métadonnées d'un élément indexé** : identifiant et version du
 document, page, identifiant d'élément, type d'équipement, groupes d'accès.
 
-**Modèle d'accès** : deux groupes fictifs (`techniciens_pompes`,
-`techniciens_compresseurs`) plus un groupe transverse (`responsables`), et la
+**Modèle d'accès** : deux groupes fictifs (`techniciens_ascenseurs`,
+`techniciens_portes`) plus un groupe transverse (`responsables`), et la
 répartition des documents entre eux. Le point à démontrer : un technicien
-pompes ne doit obtenir aucun extrait d'un manuel compresseur, même si la
+ascenseurs ne doit obtenir aucun extrait d'un manuel de porte, même si la
 recherche le classerait premier.
 
 ---

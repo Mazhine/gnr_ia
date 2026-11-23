@@ -24,3 +24,30 @@ Hub, le stockage d'objets est reporte en phase 2.
 
 **Suivant.** Phase 1 : generateur de corpus deterministe, manifeste des
 documents, deux familles d'equipements, documents pieges.
+
+---
+
+## 2026-11-20 - Phase 1 : corpus et manifeste
+
+**Fait.** Generateur deterministe (`scripts/gen_corpus/`) : catalogue unique de
+8 equipements et 13 codes, 40 documents sur 100 pages, 28 avec un element
+visuel, 3 scans sans couche texte, 2 paires contradictoires, 1 document
+d'injection, 5 cas ambigus. Inventaire de 20 colonnes ecrit en UTF-8 avec BOM,
+valeurs mesurees sur les fichiers. Verificateur automatique : 11 controles, code
+de sortie non nul en cas d'ecart. Rapport de 15 pages (12 hors annexes) et trois
+figures generees par `reportlab`. Prompts P01 a P12 reconstruits depuis
+l'historique reel du projet, avec les defauts et corrections de chacun.
+
+**Casse / ouvert.** Les defauts trouves ne l'ont pas ete par le verificateur
+mais par la relecture visuelle : plaques illisibles qui restaient nettes, scans
+indistinguables de PDF vectoriels, transformateur sans sortie, enums inventees,
+procedures identiques. Tous corriges, journalises dans
+`docs/livrable-1/journal-corrections.md`. La relecture humaine du corpus reste a
+faire : dix documents critiques sont prepares dans
+`docs/livrable-1/revue-corpus.md`, la colonne `verifie_par` porte encore
+« relecture humaine a completer » et ne sera remplie qu'apres ouverture des
+fichiers. Le lien GitHub n'existe pas encore : le depot est local, le fichier
+`LienGitHub.txt` ne peut pas etre rempli avant sa creation.
+
+**Suivant.** Phase 2 : ingestion du corpus (extraction, OCR des trois scans,
+decoupage, metadonnees), index Qdrant et premiers embeddings.

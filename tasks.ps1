@@ -43,6 +43,11 @@ Taches disponibles :
   test         Lance pytest
   lint         Lance ruff et mypy
   format       Formate le code avec ruff
+  corpus       Regenere les 40 documents du corpus et l'inventaire
+  corpus-check Verifie le corpus produit (fichiers, mesures, quotas, contradictions)
+  diagrammes   Regenere les figures du rapport (docs/diagrammes)
+  rapport      Regenere le rapport PDF a partir de l'inventaire
+  livrable     Assemble le ZIP du livrable 1 (lien lu dans git origin)
   infra-up     Demarre Qdrant, PostgreSQL et MLflow (Docker Desktop requis)
   infra-down   Arrete l'infrastructure
 "@
@@ -67,6 +72,22 @@ Taches disponibles :
     }
 
     format       = { & $Python -m ruff format . ; & $Python -m ruff check --fix . }
+
+    # --clean : le corpus est integralement reproductible, un fichier orphelin
+    # signale un document retire du catalogue sans nettoyage.
+    corpus       = { & $Python -m scripts.gen_corpus --clean }
+
+    "corpus-check" = { & $Python -m scripts.gen_corpus.verifier }
+
+    diagrammes   = { & $Python -m scripts.gen_diagrammes }
+
+    # Le rapport lit corpus/inventaire.csv : il doit etre regenere apres toute
+    # modification du corpus, sinon les chiffres affiches divergent du disque.
+    rapport      = { & $Python -m scripts.gen_rapport }
+
+    # Le lien GitHub est lu dans le remonte git : l'archive ne peut pas partir
+    # avec un lien vide.
+    livrable     = { & $Python -m scripts.build_livrable }
 
     "infra-up"   = { docker compose up -d }
 

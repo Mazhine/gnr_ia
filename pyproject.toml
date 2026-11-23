@@ -64,6 +64,14 @@ warn_unused_ignores = true
 module = ["torch", "torch.*"]
 ignore_missing_imports = true
 
+# Bibliotheques de mise en page et de lecture PDF : pas de stubs publication
+# stable. Les ignorer evite de parsemer le generateur de `# type: ignore` qui
+# n'apporteraient aucune verification supplementaire.
+[[tool.mypy.overrides]]
+module = ["reportlab", "reportlab.*", "pymupdf", "PIL", "PIL.*"]
+ignore_missing_imports = true
+follow_imports = "skip"
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"
