@@ -38,7 +38,7 @@ techniques sont dans [docs/plan-de-phases.md](docs/plan-de-phases.md).
 ## Installation
 
 ```powershell
-git clone <url> maintidoc
+git clone https://github.com/Mazhine/gnr_ia.git maintidoc
 cd maintidoc
 Copy-Item .env.example .env
 .\tasks.ps1 setup
