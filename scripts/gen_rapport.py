@@ -574,6 +574,16 @@ def planning() -> list[object]:
             ["Évaluation", "Jeu de tests, mesures, démonstration, dépôt final", "S6"],
             ["Relecture humaine", "Documents critiques, seuils et libellés de codes", "S1, puis à chaque dépôt"],
         ], [30 * mm, 86 * mm, 32 * mm], gauche={0, 1, 2}),
+        Paragraph("Relecture du corpus", H2),
+        Paragraph(
+            "Le corpus a été relu par échantillon assumé : les dix documents critiques — les "
+            "deux paires contradictoires, la note piégée, les trois scans, les deux extraits "
+            "anglais — et les dix images sources. Les assertions sont dans "
+            "<font face='Courier'>docs/livrable-1/revue-corpus.md</font>, une case par phrase "
+            "vérifiée. Les vingt documents restants ne sont pas déclarés relus : ils sont "
+            "contrôlés par le vérificateur, ce qui n'est pas la même chose. La colonne "
+            "<font face='Courier'>verifie_par</font> de l'inventaire distingue explicitement "
+            "les deux cas.", CORPS),
         PageBreak(),
     ]
 

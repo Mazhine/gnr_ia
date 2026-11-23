@@ -161,32 +161,36 @@ Ces cinq points ne se voient sur aucun document isolé.
 ## Défauts trouvés pendant la génération
 
 Ils sont détaillés dans `docs/livrable-1/journal-corrections.md` et repris dans
-la colonne `corrections` de l'inventaire. Les cinq plus significatifs :
+la colonne `corrections` de l'inventaire. Les six plus significatifs :
 
 1. les deux plaques déclarées illisibles restaient lisibles : un flou gaussien
    conserve la forme des lettres, seule une réduction de résolution la détruit ;
 2. les trois PDF scannés ressemblaient à des PDF vectoriels grisés : ils ont
    reçu du grain, un léger travers et un contraste de photocopie ;
 3. un transformateur 48 V du schéma d'armoire n'avait aucune sortie ;
-4. trois documents portaient un rôle de test inventé (`scanne`) et un document
+4. les deux schémas de boucle montraient une chaîne coupée tout en affirmant
+   que tous les contacts sont en série ;
+5. trois documents portaient un rôle de test inventé (`scanne`) et un document
    un type inexistant (`note`) ;
-5. toutes les procédures faisaient trois pages avec le même contenu générique.
+6. toutes les procédures faisaient trois pages avec le même contenu générique.
 
 Aucun de ces défauts n'a été trouvé par le vérificateur : il contrôle la
 structure, pas la crédibilité. C'est l'argument de la section 2.2 du rapport.
 
 ## Enregistrer le résultat
 
-Deux cas, une fois la relecture faite :
+**Fait le 23 novembre 2026 :** les vingt documents de l'échantillon (dix
+documents critiques, dix images) ont été relus, sans assertion fausse signalée.
+La colonne `verifie_par` porte pour eux
+`CHATER (relecture ciblée, assertions de revue-corpus.md)`. Les vingt autres
+documents gardent `contrôle automatique (verifier.py) ; relecture humaine à
+compléter` : ils n'ont pas été ouverts, et le rapport le dit en 2.6.
 
-- **tout est coché** : la colonne `verifie_par` peut passer à
-  `CHATER (échantillon de 10 documents)`, et `remarques` peut mentionner
-  « échantillon critique : 2 contradictoires, 1 injection, 3 scans, 2 anglais,
-  2 documents de référence » ;
-- **une case ne l'est pas** : le document concerné est corrigé, régénéré, et
-  l'assertion fausse est ajoutée au journal des corrections avant d'être cochée.
+Pour une correction future :
 
-Dans les deux cas, la modification se fait dans `corpus/inventaire.csv` puis
-`.\tasks.ps1 corpus` est relancé : l'inventaire est réécrit par mesure, et une
-correction manuelle du CSV serait perdue. Le bon endroit pour une correction
-durable est `CORRECTIONS` dans `scripts/gen_corpus/inventaire.py`.
+- le document concerné est corrigé, régénéré, et l'assertion fausse est ajoutée
+  au journal des corrections ;
+- la liste des documents relus (`RELUS`) et les corrections (`CORRECTIONS`)
+  vivent dans `scripts/gen_corpus/inventaire.py` ;
+- `.\tasks.ps1 corpus` relance la mesure : une modification directe du CSV
+  serait perdue, l'inventaire étant réécrit depuis le catalogue et le disque.

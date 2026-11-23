@@ -70,6 +70,20 @@ CORRECTIONS: dict[str, str] = {
 # été. Elle est renseignée document par document après la relecture humaine.
 VERIFICATION_AUTOMATIQUE = "contrôle automatique (verifier.py) ; relecture humaine à compléter"
 
+# Documents effectivement ouverts et relus : les dix documents critiques de
+# docs/livrable-1/revue-corpus.md et les dix images sources. Les vingt autres
+# restent marqués « à compléter » : un prénom dans cette colonne est une
+# affirmation vérifiable à l'oral, pas une formalité de rendu.
+RELUS: set[str] = {
+    "asc_manuel_a", "asc_manuel_a_v2", "pa_proc_reglage_capteurs", "pa_note_internet",
+    "asc_note_service", "asc_proc_scannee", "pa_manuel_scanne", "pa_proc_scannee",
+    "asc_manuel_en", "pa_manuel_en",
+    "asc_photo_plaque", "pa_photo_plaque", "asc_photo_armoire", "asc_photo_boite_cabine",
+    "pa_photo_boite_cmd", "pa_photo_voyant",
+    "asc_schema_armoire", "asc_schema_boucle_secu", "pa_schema_boucle", "pa_schema_moteur",
+}
+VERIFICATION_RELUE = "CHATER (relecture ciblée, assertions de revue-corpus.md)"
+
 LIBELLES_FORMAT: dict[str, str] = {
     "pdf_texte": "pdf texte",
     "pdf_scanne": "pdf scanné, image seule",
@@ -119,7 +133,7 @@ def construire_ligne(doc: Document, racine: Path) -> dict[str, str]:
         "licence": "synthetique ; contenu fictif produit pour un projet pédagogique",
         "genere_par_ia": "oui",
         "outil_ia": "générateur Python dédié (P04) ; reportlab et Pillow, aucun modèle de langage",
-        "verifie_par": VERIFICATION_AUTOMATIQUE,
+        "verifie_par": VERIFICATION_RELUE if doc.id in RELUS else VERIFICATION_AUTOMATIQUE,
         "corrections": CORRECTIONS.get(doc.id, "aucune"),
         "groupe_acces": doc.groupe_acces,
         "usage_test": doc.usage_test,

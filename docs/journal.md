@@ -46,7 +46,9 @@ procedures identiques. Tous corriges, journalises dans
 faire : dix documents critiques sont prepares dans
 `docs/livrable-1/revue-corpus.md`, la colonne `verifie_par` porte encore
 « relecture humaine a completer » et ne sera remplie qu'apres ouverture des
-fichiers. Le depot a ete pousse le 23 novembre sur
+fichiers. Depuis le 23 novembre, la colonne distingue les vingt documents relus
+(dix critiques, dix images) des vingt autres, qui restent explicitement non
+relus. Le depot a ete pousse le 23 novembre sur
 https://github.com/Mazhine/gnr_ia ; il est encore prive, donc pas ouvrable par
 l'enseignante tant que la visibilite n'a pas ete passee en public (ou un acces
 accorde). L'archive `docs/livrable-1/L1_MaintiDoc_CHATER.zip` est construite et
