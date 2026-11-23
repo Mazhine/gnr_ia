@@ -357,9 +357,12 @@ def corpus(documents: list[dict[str, str]]) -> list[object]:
             "les deux plaques signalétiques déclarées illisibles restaient lisibles ; un flou "
             "gaussien conserve la forme des lettres, une réduction de résolution non ;",
             "les trois PDF scannés n'avaient plus de texte extractible mais ressemblaient "
-            "visuellement à des PDF vectoriels ; ils ont reçu grain, gris de papier et vignette ;",
+            "visuellement à des PDF vectoriels ; ils ont reçu grain, travers de feuille et gris "
+            "de papier ;",
             "un transformateur 48 V du schéma d'armoire n'avait aucune sortie, donc ne servait "
             "à rien sur le dessin ;",
+            "les deux schémas de boucle affirmaient que tous les contacts sont en série tout en "
+            "laissant une liaison non tracée : le dessin contredisait sa légende ;",
             "trois documents portaient un rôle de test inventé (<font face='Courier'>scanne</font>) "
             "et un document un type inexistant (<font face='Courier'>note</font>) ;",
             "un extrait anglais laissait un paragraphe orphelin sur une page presque vide ;",
@@ -381,8 +384,19 @@ def architecture() -> list[object]:
             "affirmation est bien reliée à une source. Les quatre points de contrôle imposés "
             "sont placés sur le schéma, pas seulement décrits dans le texte.", CORPS),
     ] + image(Path("docs/diagrammes/architecture.png"), 160,
-              "Figure 1 — Architecture cible. Les chiffres (1) à (4) renvoient aux quatre "
-              "points de contrôle imposés.") + [
+              "Figure 1 — Architecture cible : sept blocs, quatre points de contrôle.") + [
+        Paragraph("Les quatre points de contrôle", H2),
+    ] + [
+        Paragraph(f"<b>({numero})</b> {texte}", ITEM) for numero, texte in [
+            ("1", "contrôle d'accès avant la recherche, jamais après : un extrait interdit ne "
+                  "doit même pas être récupéré ;"),
+            ("2", "vérification que chaque citation existe et soutient l'affirmation ; une "
+                  "citation qui ne dit pas ce qu'on lui fait dire est rejetée ;"),
+            ("3", "interruption pour approbation humaine avant tout appel MCP de création ;"),
+            ("4", "contrôle des autorisations côté serveur MCP, à chaque appel, et non côté "
+                  "client."),
+        ]
+    ] + [
         KeepTogether([
             Paragraph("Les sept blocs", H2),
             tableau([
@@ -403,26 +417,25 @@ def architecture() -> list[object]:
                  "réponse → réponse vérifiée", "Code + règles"],
             ], [30 * mm, 45 * mm, 48 * mm, 38 * mm], gauche={0, 1, 2, 3}),
         ]),
-        Paragraph("Les quatre points de contrôle", H2),
-    ] + [
-        Paragraph(f"<b>({numero})</b> {texte}", ITEM) for numero, texte in [
-            ("1", "contrôle d'accès avant la recherche, jamais après : un extrait interdit ne "
-                  "doit même pas être récupéré ;"),
-            ("2", "vérification que chaque citation existe et soutient l'affirmation ; une "
-                  "citation qui ne dit pas ce qu'on lui fait dire est rejetée ;"),
-            ("3", "interruption pour approbation humaine avant tout appel MCP de création ;"),
-            ("4", "contrôle des autorisations côté serveur MCP, à chaque appel, et non côté "
-                  "client."),
-        ]
     ] + [
         Paragraph("Parcours d'une requête", H2),
+    ] + [
+        Paragraph(f"<b>{numero}.</b> {texte}", ITEM) for numero, texte in [
+            ("1", "authentification : les groupes autorisés sont calculés avant toute recherche ;"),
+            ("2", "planification : la question, et la photo si elle existe, sont transformées en "
+                  "requête de recherche ;"),
+            ("3", "récupération : seuls les extraits des documents autorisés remontent de Qdrant ;"),
+            ("4", "analyse de la photo par le modèle vision-langage, s'il y a une photo ;"),
+            ("5", "assemblage : chaque affirmation de la réponse est rattachée à une page et à un "
+                  "élément ;"),
+            ("6", "vérification des citations, puis affichage ; si un extrait manque ou si deux "
+                  "sources se contredisent, la réponse devient une demande de clarification."),
+        ]
+    ] + [
         Paragraph(
-            "Une question suit six étapes : authentification et contrôle d'accès ; "
-            "planification de la recherche ; récupération des extraits autorisés ; analyse de "
-            "la photo par le modèle vision-langage ; assemblage d'une réponse sourcée ; "
-            "vérification des citations avant affichage. Si un extrait manque ou si deux "
-            "sources se contredisent, la réponse devient une demande de clarification. C'est "
-            "un résultat acceptable, pas un échec.", CORPS),
+            "La demande de clarification est un résultat acceptable, pas un échec : elle coûte "
+            "une question au technicien, alors qu'une réponse inventée coûte une intervention "
+            "sur le mauvais organe.", CORPS),
         Paragraph("Questions ouvertes", H2),
     ] + [
         Paragraph(f"• {texte}", ITEM) for texte in [

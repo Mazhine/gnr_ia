@@ -79,14 +79,32 @@ PDF normal : ni grain, ni gris de papier, ni ombre de bord. À l'oral, cela se v
 immédiatement.
 
 **Correction.** `scanner()` applique désormais un gris de papier
-(`0.92 × niveau + 8`), un léger flou (0,4 px) et une vignette radiale
-déterministe qui assombrit les bords. Le résultat est identique à chaque
-génération, sans tirage aléatoire.
+(`0.90 × niveau + 10`), un léger flou (0,5 px), une vignette radiale
+déterministe, un grain de capteur tiré d'une graine fixe et un travers de
+feuille de 0,4°. Le résultat est identique à chaque génération, sans tirage
+aléatoire.
 
 **Note technique.** Pillow de cet environnement n'a pas d'encodeur PNG et
 `pymupdf.Pixmap(...)` échoue à partir d'octets bruts ; les échantillons sont donc
 réécrits dans `pixmap.samples_mv[:]`. C'est laid mais stable, et documenté dans le
 code.
+
+### `asc_schema_boucle_secu`, `pa_schema_boucle` — une chaîne de sécurité coupée
+
+**Symptôme.** Les deux schémas de boucle affirmaient, en légende, que « tous les
+contacts sont en série », mais la liaison entre le troisième bloc (barre
+palpeuse, ou boucle au sol) et l'arrêt d'urgence n'était pas tracée. La chaîne se
+lisait donc en deux morceaux : le schéma contredisait sa propre légende.
+
+**Cause.** La boucle de dessin sautait explicitement la liaison d'indice 2,
+probablement pour éviter un tracé qui semblait encombré. La géométrie laissait
+pourtant 80 px entre les deux blocs.
+
+**Correction.** La liaison est rétablie ; le tracé se lit maintenant d'un seul
+trait, puis redescend vers le relais de sécurité et revient vers le moteur.
+
+**Preuve.** Les deux images ont été réexaminées après régénération ; la flèche
+manquante est visible et la continuité est complète.
 
 ## Défauts de conformité aux consignes
 

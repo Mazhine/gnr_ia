@@ -114,6 +114,40 @@ image.
 
 ---
 
+## Les dix images sources (5 minutes)
+
+Les images ne sont pas des illustrations posées dans un PDF : ce sont des
+**documents** à part entière (`type_document` = `photo` ou `schema`, `format` =
+`image`, une page). Elles se trouvent dans `corpus/images/` et, dans l'archive,
+dans `L1_MaintiDoc_CHATER_Corpus/images/`. Même identifiant que la ligne
+d'inventaire.
+
+Pour chaque image, ce qui doit être **visible**, et ce qui serait un défaut :
+
+| Fichier | Doit montrer | Serait un défaut |
+|---|---|---|
+| `asc_photo_plaque` | `VERTICALIS` lisible, type `VHT-A 1000`, un numéro de série **illisible** | un numéro de série qu'on peut lire |
+| `pa_photo_plaque` | `PORTALIS` lisible, type `SL-400`, numéro de série **illisible** | idem |
+| `asc_photo_armoire` | huit voyants légendés : RÉSEAU, MOTEUR, SÉCURITÉ verts ; FREIN, VARIATEUR gris ; PORTE, DÉFAUT rouges ; BATTERIE bleu | des voyants sans légende |
+| `asc_photo_boite_cabine` | afficheur `3`, mention « CABINE AU NIVEAU 3 », DÉFAUT orange et SERVICE vert **allumés**, ALARME et HORS SERVICE éteints, boutons 1 à 8 | tous les voyants allumés |
+| `pa_photo_boite_cmd` | `SL-400 - PA-01`, afficheur `--`, DÉFAUT **éteint**, temporisation 2,5 s | un code de défaut affiché |
+| `pa_photo_voyant` | `SL-400 - PA-02`, afficheur `d 51`, voyant DÉFAUT orange allumé, touches OUV / FER / AUTO / RÉG | un voyant vert alors que l'afficheur annonce un défaut |
+| `asc_schema_armoire` | QF1 → KM1 → V1 → M1 ; T1 « Transformateur 48 V » **avec un conducteur de sortie** vers KA1 ; bornier X1 1-2 = 400 V ; renvoi à ASC-PR-002 | un transformateur sans sortie |
+| `asc_schema_boucle_secu` | chaîne continue boîte à boutons → verrouillage → barre palpeuse → arrêt d'urgence → relais → variateur → moteur | une flèche manquante entre deux blocs |
+| `pa_schema_boucle` | chaîne continue cellule → détecteur → boucle au sol → arrêt d'urgence → automate → variateur → moteur | idem |
+| `pa_schema_moteur` | M1 0,75 kW accouplé au réducteur i = 1/40 ; frein 24 V ; came réglable NO/NF | une puissance ou un rapport incohérents avec le manuel PG-01 |
+
+Deux points d'attention :
+
+- **les deux plaques sont volontairement floues.** C'est le cas ambigu prévu :
+  le technicien peut lire la marque, pas le numéro de série. Ne pas le signaler
+  comme un défaut d'image ;
+- **le voyant orange de `pa_photo_voyant` porte le code 51**, qui vaut « défaut
+  de fin de course » chez Portalis et « défaut de porte (verrouillage) » chez
+  Verticalis. C'est la collision de codes voulue, pas une erreur.
+
+---
+
 ## Cohérence transverse (5 minutes)
 
 Ces cinq points ne se voient sur aucun document isolé.

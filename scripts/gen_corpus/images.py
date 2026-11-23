@@ -269,12 +269,12 @@ def schema_boucle(destination: Path, famille: str) -> None:
         draw.multiline_text((x + 18, y + 48), libelle, font=fonte, fill=NOIR, spacing=6)
 
     # Liaisons horizontales : la première rangée va vers la droite, la seconde
-    # revient vers la gauche. La liaison verticale relie les deux rangées.
+    # revient vers la gauche. Aucune liaison n'est omise : la chaîne doit se
+    # lire d'un seul trait, sinon le schéma contredit sa propre légende
+    # (« tous les contacts sont en série »).
     for index in range(6):
         x1, y1 = positions[index]
         x2, y2 = positions[index + 1]
-        if index == 2:
-            continue
         milieu = y1 + hauteur_boite // 2
         if y1 == y2:
             if x2 > x1:
